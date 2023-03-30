@@ -1,3 +1,5 @@
+grafana-data/
+
 # Logs
 logs
 *.log

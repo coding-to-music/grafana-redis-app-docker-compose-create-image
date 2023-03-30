@@ -130,3 +130,19 @@ To set the ownership of the grafana-data directory on the host system, you can u
 ```
 sudo chown -R $(id -u):$(id -g) ./grafana-data
 ```
+
+To use the redis-cli tool to connect to Redis running on port 6380, you can use the following command:
+
+```
+redis-cli -p 6380
+```
+
+This command will start the redis-cli tool and connect to Redis on port 6380. You can then use the tool to interact with the Redis server.
+
+If you want to connect to Redis running in a Docker container, you can use the following command:
+
+```
+docker exec -it redismod redis-cli -p 6380
+```
+
+This command will connect to the redismod container running Redis and start the redis-cli tool, connecting to Redis on port 6380. You can then use the tool to interact with Redis in the container.
