@@ -1,4 +1,6 @@
 grafana-data/
+grafana-plugins/
+grafana-json-datasource/
 
 # Logs
 logs
