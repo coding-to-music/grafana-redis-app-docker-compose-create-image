@@ -5,7 +5,7 @@ services:
     container_name: redismod
     image: redislabs/redismod:latest
     ports:
-      - 6380:6379/tcp
+      - 6379:6379/tcp
 
   grafana:
     container_name: grafana
