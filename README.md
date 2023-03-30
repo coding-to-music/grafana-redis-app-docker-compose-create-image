@@ -1,3 +1,33 @@
+# grafana-redis-app-docker-compose-create-image
+
+# 🚀 Redis Application for @grafana provides Application pages and custom panels for Redis Data Source. Built as a combined docker image 🚀
+
+https://github.com/coding-to-music/grafana-redis-app-docker-compose-create-image
+
+From / By https://github.com/RedisGrafana/grafana-redis-app
+
+## Environment variables:
+
+```java
+
+```
+
+## user interfaces:
+
+- Grafana http://localhost:3000
+
+## GitHub
+
+```java
+git init
+git add .
+git remote remove origin
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:coding-to-music/grafana-redis-app-docker-compose-create-image.git
+git push -u origin main
+```
+
 # Redis Application plugin for Grafana
 
 ![Application](https://raw.githubusercontent.com/RedisGrafana/grafana-redis-app/master/src/img/redis-app.png)
