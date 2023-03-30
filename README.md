@@ -118,3 +118,15 @@ We love to hear from users, developers, and the whole community interested in th
 ## License
 
 - Apache License Version 2.0, see [LICENSE](https://github.com/RedisGrafana/grafana-redis-app/blob/master/LICENSE).
+
+## Grafana Plugins
+
+https://github.com/grafana/grafana-json-datasource
+
+## make my local system writable 
+
+To set the ownership of the grafana-data directory on the host system, you can use the following command:
+
+```
+sudo chown -R $(id -u):$(id -g) ./grafana-data
+```
