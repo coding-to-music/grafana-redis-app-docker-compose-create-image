@@ -11,6 +11,7 @@ yarn-error.log*
 
 .env 
 
+mage/
 node_modules/
 
 # Runtime data

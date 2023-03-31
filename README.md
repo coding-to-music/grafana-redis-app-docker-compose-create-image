@@ -281,7 +281,139 @@ tail -100 /var/log/grafana/grafana.log
 
 The Overview page explains how to enable plugin and manage multiple Redis Data Sources.
 
+## install go programming language
 
+```
+wget https://golang.org/dl/go1.17.6.linux-amd64.tar.gz
+
+tar -xvf go1.17.6.linux-amd64.tar.gz
+
+sudo mv go /usr/local
+```
+
+Set the environment variables required for Go to work correctly. Add the following lines to your ~/.bashrc file to set the Go environment variables:
+
+```
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go
+```
+
+Developing Redis Data Source¶
+
+https://redisgrafana.github.io/development/redis-datasource/
+
+Developing Redis Data Source involves setting up the development environment (which can be either Linux-based or macOS-based), building and running tests.
+
+## Install Grafana¶
+Grafana can be started in Docker or installed locally:
+
+Follow Installation instructions to install and start Grafana
+
+Open Grafana UI in web-browser http://X.X.X.X:3000
+
+## Clone repository¶
+git clone https://github.com/RedisGrafana/grafana-redis-datasource.git
+
+## Build¶
+
+### Frontend¶
+
+Install the latest version of Node.js using Node Version Manager or download binaries
+
+- Install yarn globally
+
+```
+npm install yarn -g
+```
+
+Install dependencies
+```
+yarn install
+```
+
+Build frontend components
+
+```
+yarn build
+```
+
+## Backend¶
+
+- Install Golang for your platform
+
+```
+yum install go
+```
+
+- Install Grafana plugin SDK for Go dependency
+
+```
+go get -u github.com/grafana/grafana-plugin-sdk-go
+```
+
+- Install Mage (make-like build tool using Go)
+
+```
+git clone https://github.com/magefile/mage
+cd mage
+go run bootstrap.go
+```
+
+- Build backend binaries for Linux, Windows and MacOS for supported platforms
+
+```
+yarn build:backend
+```
+
+## Start Grafana¶
+
+Docker Compose
+Prerequisite
+
+Docker Compose should be pre-installed following documentation.
+
+```
+yarn start:dev
+```
+
+Update local Grafana Configuration
+
+Move distribution to Grafana's plugins/ folder
+
+```
+mv dist/ /var/lib/grafana/plugins/redis-datasource
+```
+
+Add redis-datasource to allowed unsigned plugins
+
+```
+vi /etc/grafana/grafana.ini
+```
+
+```
+[plugins]
+;enable_alpha = false
+;app_tls_skip_verify_insecure = false
+# Enter a comma-separated list of plugin identifiers to identify plugins that are allowed to be loaded even if they lack a valid signature.
+allow_loading_unsigned_plugins = redis-datasource
+```
+
+Restart Grafana and verify that plugin registered
+
+```
+tail -100 /var/log/grafana/grafana.log
+```
+
+```
+t=2020-07-01T06:03:38+0000 lvl=info msg="Starting plugin search" logger=plugins
+t=2020-07-01T06:03:38+0000 lvl=warn msg="Running an unsigned backend plugin" logger=plugins pluginID=redis-datasource pluginDir=/var/lib/grafana/plugins/redis-datasource
+t=2020-07-01T06:03:38+0000 lvl=info msg="Registering plugin" logger=plugins name=redis-datasource
+t=2020-07-01T06:03:38+0000 lvl=info msg="HTTP Server Listen" logger=http.server address=[::]:3000 protocol=http subUrl= socket=
+```
+
+## Configuration¶
+
+The Redis Data Source Configuration page explains how to connect data source to Redis database.
 
 ```
 npm install --save-dev babel-jest
