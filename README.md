@@ -146,3 +146,143 @@ docker exec -it redismod redis-cli -p 6380
 ```
 
 This command will connect to the redismod container running Redis and start the redis-cli tool, connecting to Redis on port 6380. You can then use the tool to interact with Redis in the container.
+
+## To build the Redis Application redis-app Plugin
+
+https://redisgrafana.github.io/development/redis-app/
+
+## Developing Redis Application plugin¶
+
+Developing Application plugin involves setting up the development environment (which can be either Linux-based or macOS-based), building and running tests.
+
+### Install Grafana¶
+
+Grafana can be used in Docker or installed locally:
+- Follow Installation instructions to install and start Grafana
+- Open Grafana UI in web-browser http://X.X.X.X:3000
+
+### Clone repository¶
+
+```
+git clone https://github.com/RedisGrafana/grafana-redis-app.git
+```
+
+### Build Application¶
+
+Install the latest version of Node.js using Node Version Manager or download binaries
+
+### Install yarn globally
+
+```
+npm install yarn -g
+```
+
+- Install dependencies
+
+```
+yarn install
+```
+
+- Build frontend components
+
+```
+yarn build
+```
+
+### Start Grafana¶
+
+#### Docker Compose
+
+Prerequisite
+- Docker Compose should be pre-installed following documentation.
+
+```
+yarn start:dev
+```
+
+#### Docker-compose file for Development includes:
+
+- Service `redis` using Redismod
+- Service `grafana` using Grafana which allow loading unsigned plugins `redis-app` and `redis-datasource`
+
+#### Redis Data Source
+
+Redis Data Source should be cloned and built following Instructions.
+
+https://redisgrafana.github.io/development/redis-datasource/
+
+```
+version: "3.4"
+
+services:
+  redis:
+    container_name: redismod
+    image: redislabs/redismod:latest
+    ports:
+      - 6379:6379/tcp
+    # Uncomment and edit the local path in the following line to have
+    # Redis' data persisted to the host's filesystem.
+    # volumes:
+    #   - ./dump.rdb:/data/dump.rdb
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000/tcp
+    environment:
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_BASIC_ENABLED=false
+      - GF_ENABLE_GZIP=true
+      - GF_USERS_DEFAULT_THEME=light
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=redis-app,redis-datasource
+      # Uncomment to run in debug mode
+      # - GF_LOG_LEVEL=debug
+    volumes:
+      # Redis Data Source should be cloned and built
+      - ../../grafana-redis-datasource/dist:/var/lib/grafana/plugins/redis-datasource
+      - ../dist:/var/lib/grafana/plugins/redis-app
+      - ../provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ../provisioning/plugins:/etc/grafana/provisioning/plugins
+      # Uncomment to preserve Grafana configuration
+      # - ./data:/var/lib/grafana
+```
+
+#### Update local Grafana Configuration
+
+Move distribution to Grafana's plugins/ folder
+
+```
+mv dist/ /var/lib/grafana/plugins/redis-app
+```
+
+Add redis-app to allowed unsigned plugins
+
+```
+vi /etc/grafana/grafana.ini
+```
+
+```
+[plugins]
+;enable_alpha = false
+;app_tls_skip_verify_insecure = false
+# Enter a comma-separated list of plugin identifiers to identify plugins that are allowed to be loaded even if they lack a valid signature.
+allow_loading_unsigned_plugins = redis-datasource,redis-app
+```
+
+Restart and verify that plugin is registered
+
+```
+tail -100 /var/log/grafana/grafana.log
+```
+
+#### Configuration¶
+
+The Overview page explains how to enable plugin and manage multiple Redis Data Sources.
+
+
+
+```
+npm install --save-dev babel-jest
+```
