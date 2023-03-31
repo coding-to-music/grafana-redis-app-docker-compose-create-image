@@ -189,6 +189,41 @@ yarn install
 yarn build
 ```
 
+Output
+
+Many errors such as this:
+
+```
+ FAIL  src/redis-latency-panel/components/RedisLatencyTable/RedisLatencyTable.test.tsx
+  ● Test suite failed to run
+
+    Jest encountered an unexpected token
+
+    This usually means that you are trying to import a file which Jest cannot parse, e.g. it's not plain JavaScript.
+
+    By default, if Jest sees a Babel config, it will use that to transform your files, ignoring "node_modules".
+
+    Here's what you can do:
+     • If you are trying to use ECMAScript Modules, see https://jestjs.io/docs/en/ecmascript-modules for how to enable it.
+     • To have some of your "node_modules" files transformed, you can specify a custom "transformIgnorePatterns" in your config.
+     • If you need a custom transformation specify a "transform" option in your config.
+     • If you simply want to mock your non-JS modules (e.g. binary assets) you can stub them out with the "moduleNameMapper" config option.
+
+    You'll find more details and examples of these config options in the docs:
+    https://jestjs.io/docs/en/configuration.html
+
+    Details:
+
+    /home/tmc/ap/vol6/grafana-redis-app-docker-compose-create-image/node_modules/@grafana/data/node_modules/d3-interpolate/src/index.js:1
+    ({"Object.<anonymous>":function(module,exports,require,__dirname,__filename,global,jest){export { default as interpolate } from "./value.js";
+                                                                                             ^^^^^^
+
+    SyntaxError: Unexpected token 'export'
+
+      at Runtime.createScriptFromCode (node_modules/jest-runtime/build/index.js:1350:14)
+      at Object.<anonymous> (node_modules/@grafana/data/dist/index.js:18:21)
+```
+
 ### Start Grafana¶
 
 #### Docker Compose
@@ -198,6 +233,20 @@ Prerequisite
 
 ```
 yarn start:dev
+```
+
+Output
+
+```
+grafana    | logger=plugin.finder t=2023-03-31T22:32:29.79858532Z level=warn msg="Skipping finding plugins as directory does not exist" path=/usr/share/grafana/plugins-bundled
+grafana    | logger=secrets t=2023-03-31T22:32:29.79979197Z level=info msg="Envelope encryption state" enabled=true currentprovider=secretKey.v1
+grafana    | logger=query_data t=2023-03-31T22:32:29.803575964Z level=info msg="Query Service initialization"
+grafana    | logger=live.push_http t=2023-03-31T22:32:29.808800544Z level=info msg="Live Push Gateway initialization"
+grafana    | logger=infra.usagestats.collector t=2023-03-31T22:32:30.940560233Z level=info msg="registering usage stat providers" usageStatsProvidersLen=2
+grafana    | logger=provisioning.datasources t=2023-03-31T22:32:30.96645739Z level=info msg="inserting datasource from configuration " name=Redis uid=PA7F6415749A3297A
+grafana    | logger=provisioning t=2023-03-31T22:32:30.997043673Z level=error msg="Failed to provision plugins" error="app provisioning error: plugin not installed: \"redis-app\""
+grafana    | Error: ✗ app provisioning error: plugin not installed: "redis-app"
+grafana exited with code 1
 ```
 
 #### Docker-compose file for Development includes:
